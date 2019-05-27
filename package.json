@@ -1,0 +1,27 @@
+{
+  "name": "friendfinder",
+  "version": "1.0.0",
+  "description": "requirements for friendFinder app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krisjecen/FriendFinder.git"
+  },
+  "keywords": [
+    "friendFinder",
+    "social",
+    "matching",
+    "app",
+    "friends",
+    "survey"
+  ],
+  "author": "Kris Jecen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/krisjecen/FriendFinder/issues"
+  },
+  "homepage": "https://github.com/krisjecen/FriendFinder#readme"
+}
