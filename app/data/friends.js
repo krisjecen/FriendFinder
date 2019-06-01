@@ -50,6 +50,23 @@ var surveyArray = [
             2
             ]
 
+    },
+    {
+        "name":"Wimbly",
+        "photo":"https://cdn.pixabay.com/photo/2015/03/17/14/05/sparkler-677774_960_720.jpg",
+        "scores":[
+            3,
+            1,
+            2,
+            2,
+            4,
+            4,
+            4,
+            4,
+            5,
+            1
+            ]
+
     }
 ];
 // object structure: one object per user survey

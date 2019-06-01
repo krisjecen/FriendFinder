@@ -181,8 +181,8 @@
         </div>
         <div class="modal-body">
           <h2 id="match-name"></h2>
-          <!-- TODO: you've entered a static image here to test the modal, need to update it -->
-          <img id="match-img" width="300px" src="https://cdn.pixabay.com/photo/2019/05/08/21/21/cat-4189697_960_720.jpg" alt="">
+          <!-- static image here to test the modal, can replace later-->
+          <img id="match-img" width="400px" src="https://cdn.pixabay.com/photo/2019/05/08/21/21/cat-4189697_960_720.jpg" alt="">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -193,54 +193,37 @@
   </div>
 
   <script type="text/javascript">
-    // Chosen CSS
-    // var config = {
-    //   ".chosen-select": {},
-    //   ".chosen-select-deselect": {
-    //     allow_single_deselect: true
-    //   },
-    //   ".chosen-select-no-single": {
-    //     disable_search_threshold: 10
-    //   },
-    //   ".chosen-select-no-results": {
-    //     no_results_text: "Oops, nothing found!"
-    //   },
-    //   ".chosen-select-width": {
-    //     width: "95%"
-    //   }
-    // };
-
-    // for (var selector in config) {
-    //   $(selector).chosen(config[selector]);
-    // }
-
+    
     // Capture the form inputs
     document.querySelector("#submit").addEventListener("click", function(event) {
       event.preventDefault();
+        
+      var formFields = document.querySelectorAll(".form-control");
+      var surveyFields = document.querySelectorAll(".chosen-select");
+      // console.log(formFields);
+      // console.log(surveyFields);
 
-    //   // Form validation
-    //   function validateForm() {
-    //     var isValid = true;
-    //     $(".form-control").each(function() {
-    //       if ($(this).val() === "") {
-    //         isValid = false;
-    //       }
-    //     });
-
-    //     $(".chosen-select").each(function() {
-
-    //       if ($(this).val() === "") {
-    //         isValid = false;
-    //       }
-    //     });
-    //     return isValid;
-    //   }
-      
-        var tester = true;
+      // validate that all fields of the form are complete / not blank
+      function validateForm() {
+        var validated = true;  
+        for (let i = 0; i < formFields.length; i++) {
+            // console.log(`checking the value of form-control formFields[${i}] data: ${formFields[i].value}`)
+            if(formFields[i].value === "") {
+                validated = false;
+            }
+        }
+        for (let j = 0;  j < surveyFields.length; j++) {
+            // console.log(`checking the value of form-control surveyFields[${j}] data: ${surveyFields[j].value}`)
+            if(surveyFields[j].value === "") {
+                validated = false;
+            }
+        }
+        return validated;
+      }
+        
       // If all required fields are filled
-    //   if (validateForm()) {
-      if (tester) {
-        // Create an object for the user"s data
+      if (validateForm()) {
+        // Create an object for the user's data
         var surveyData = {
           name: document.getElementById("name").value.trim(),
           photo: document.getElementById("photo").value.trim(),
@@ -258,7 +241,7 @@
           ]
         };
 
-        console.log(surveyData);
+        // console.log(surveyData);
 
         fetch("/api/friends", {
             method: "POST",
@@ -269,13 +252,10 @@
         })
             .then(response => response.json())
             .then(data => {
-            // .then(res => res.text())          // convert to plain text
-            // .then(text => console.log(text))  // then log it out
-            // check out whatever comes back
-            // console.log("i think we posted the data?");
-            // Grab the result from the post so that the best match's name and photo are displayed.
-            console.log(data);
+                // Grab the result from the post so that the best match's name and photo are displayed.
+                // update the html with the name and photo of the best match
                 document.getElementById("match-name").textContent = data.name;
+                // stretch goal: check to see if the photo is a valid web address before displaying it
                 document.getElementById("match-img").src = data.photo;
                 // Show the modal with the best match
                 $("#results-modal").modal("toggle");
@@ -283,16 +263,12 @@
 
 
             });
-    //     // AJAX post the data to the friends API.
-    //     $.post("/api/friends", userData, function(data) {
 
 
-
-    //     });
-       } 
-       //else {
-    //     alert("Please fill out all fields before submitting!");
-    //   }
+            // if any fields are blank, display an alert
+        } else {
+            alert("Looks like you left a field or two blank, could you fill those in?");
+        }
 
       // stretch goal! reset form
       // the values in the form do not reset but i feel in an ideal friendFinder app, they would reset
