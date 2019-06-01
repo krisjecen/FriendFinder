@@ -52,6 +52,7 @@ module.exports = function(app) {
         var matchDifference = 0;
         var lowestDifference = Infinity;
         var bestMatch = null;
+        var bestMatchData = null;
         for (let p = 0; p < surveyData.length; p++) {
             matchDifference = 0;
             console.log(`currently we are comparing with: ${surveyData[p].name}`)
@@ -64,13 +65,14 @@ module.exports = function(app) {
             if (matchDifference < lowestDifference) {
                 lowestDifference = matchDifference;
                 bestMatch = surveyData[p].name;
+                bestMatchData = surveyData[p];
                 console.log(`the best match so far is ${bestMatch} with ${lowestDifference}.`)
     
             };
         };
         console.log(`can i see ${bestMatch} out here?`)
         surveyData.push(req.body);
-        res.json(surveyData);
-        console.log(surveyData);
+        res.json(bestMatchData);
+        // console.log(surveyData);
     })
 };

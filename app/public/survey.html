@@ -16,7 +16,7 @@
 
   <!-- Chosen -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.css">
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
 
 </head>
 
@@ -182,7 +182,7 @@
         <div class="modal-body">
           <h2 id="match-name"></h2>
           <!-- TODO: you've entered a static image here to test the modal, need to update it -->
-          <img id="match-img" src="https://cdn.pixabay.com/photo/2019/05/08/21/21/cat-4189697_960_720.jpg" alt="">
+          <img id="match-img" width="300px" src="https://cdn.pixabay.com/photo/2019/05/08/21/21/cat-4189697_960_720.jpg" alt="">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -268,25 +268,25 @@
             }
         })
             .then(response => response.json())
-            // .then(data => {
+            .then(data => {
             // .then(res => res.text())          // convert to plain text
             // .then(text => console.log(text))  // then log it out
             // check out whatever comes back
-            console.log("i think we posted the data?");
-            // console.log(data);
+            // console.log("i think we posted the data?");
+            // Grab the result from the post so that the best match's name and photo are displayed.
+            console.log(data);
+                document.getElementById("match-name").textContent = data.name;
+                document.getElementById("match-img").src = data.photo;
+                // Show the modal with the best match
+                $("#results-modal").modal("toggle");
 
-    //       // Grab the result from the post so that the best match's name and photo are displayed.
 
-    //       // Show the modal with the best match
 
-        //    });
+            });
     //     // AJAX post the data to the friends API.
     //     $.post("/api/friends", userData, function(data) {
 
-    //       $("#match-name").text(data.name);
-    //       $("#match-img").attr("src", data.photo);
 
-    //       $("#results-modal").modal("toggle");
 
     //     });
        } 
