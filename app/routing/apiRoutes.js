@@ -1,3 +1,4 @@
+'use strict';
 // load our data source(s)
 // in this case it is our friends survey data
 
@@ -31,6 +32,14 @@ function computeBestMatch(userScores){
     // return bestMatch;
 }
 
+//TODO: replace with Lodash sum
+function sum(vals) {
+  let tot = 0;
+  for(let i = 0; i < vals.length; i++) {
+    tot += vals[i]
+  }
+  return tot;
+}
 
 module.exports = function(app) {
     // GET route to /api/friends
@@ -71,3 +80,5 @@ module.exports = function(app) {
         // console.log(surveyData);
     })
 };
+//just exposing these here for testing.
+module.exports.sum = sum
