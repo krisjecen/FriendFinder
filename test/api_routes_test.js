@@ -18,6 +18,20 @@ describe("zip", function(){
         [5, 6, 7, 8]),
       [[1, 5], [2, 6], [3, 7], [4, 8]])})
 })
+describe("zipWith", function(){
+  it("will pair up equal length indexables with a func", function(){
+    assert.deepEqual(api.zipWith(
+      "abcdefg",
+      [1, 2, 3, 4, 5, 6, 7],
+      (char, int) => char + int),
+      ["a1", "b2", "c3", "d4", "e5", "f6", "g7"]) })
+  it("will stop with the shorter thing", function(){
+    assert.deepEqual(api.zipWith(
+      [6, 6, 6],
+      [1, 8],
+      (a, b) => a - b),
+      [5, -2]) });
+});
 
 const valProp = (x) => x.val
 describe("minBy", function(){

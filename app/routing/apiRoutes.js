@@ -32,7 +32,8 @@ function computeBestMatch(userScores){
     // return bestMatch;
 }
 
-//TODO: replace with Lodash sum, zip, minBy
+//Would normally use lodash for sum, zip, zipWith, and minBy.
+//I wrote them here for illustration.
 function sum(vals) {
   let tot = 0;
   for(let i = 0; i < vals.length; i++) {
@@ -40,24 +41,40 @@ function sum(vals) {
   }
   return tot;
 }
+/* Pair of arrays -> Array of pairs
+ * https://lodash.com/docs/#zip
+ * Note: with my change to use zipWith, zip isn't needed here.
+ * Leaving it for posterity.
+ * Freeze the pair arrays for good measure, to make them like a
+ * tuple in python.
+ */
 function zip(xs, ys) {
-  let xyPairs = []
+  return zipWith(xs, ys, (x, y) => Object.freeze([x, y])) 
+}
+/* Combines the pair of arrays using the combining function func
+ * return_value[i] = func(xs[i], ys[i]) for all i indexes in the shorter
+ * of xs and ys */
+function zipWith(xs, ys, func) {
+  let combined = []
   let len = Math.min(xs.length, ys.length)
   for(let i = 0; i < len; i++) {
-    xyPairs.push([xs[i], ys[i]])
+    combined.push(func(xs[i], ys[i]))
   }
-  return xyPairs
+  return combined
 }
-function minBy(xs, keyFn){
+/* Find the element in an array that minimizes a score function.
+ * https://lodash.com/docs/#minBy
+ */
+function minBy(xs, scoreFunc){
   if (xs.length == 0) {
     return undefined
   } else if (xs.length == 1) {
     return xs[0]
   } else {
     let minVal = xs[0]
-    let minKey = keyFn(minVal)
+    let minKey = scoreFunc(minVal)
     for(let i = 1; i < xs.length; i++){
-      const key = keyFn(xs[i])
+      const key = scoreFunc(xs[i])
       if(key < minKey) {
         minVal = xs[i]
         minKey = key
@@ -67,13 +84,16 @@ function minBy(xs, keyFn){
   }
 }
 function incompatibility(user1, user2){
-  let diffs = zip(user1.scores, user2.scores).map(([score1, score2]) =>
-    Math.abs(score1 - score2));
+  let diffs = zipWith(
+    user1.scores, user2.scores,
+    (score1, score2) => Math.abs(score1 - score2)
+  );
   return sum(diffs);
 }
 
 function bestMatch(user, prospects){
-  return minBy(prospects, (prospect) => incompatibility(user, prospect))
+  return minBy(prospects, function(prospect) {
+    return incompatibility(user, prospect)})
 }
 
 module.exports = function(app) {
@@ -88,6 +108,7 @@ module.exports = function(app) {
     app.post("/api/friends", function(req, res) {
         var newUser = req.body;
         //convert strings from input to numbers
+        //should probably fix this in the client?
         newUser.scores = newUser.scores.map(Number);
         res.json(bestMatch(newUser, surveyData));
         surveyData.push(newUser);
@@ -100,3 +121,4 @@ module.exports.zip = zip
 module.exports.minBy = minBy
 module.exports.incompatibility = incompatibility
 module.exports.bestMatch = bestMatch
+module.exports.zipWith = zipWith
